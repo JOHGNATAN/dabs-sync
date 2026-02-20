@@ -1,0 +1,47 @@
+name: CI Workflow
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.github/workflows/**'
+
+jobs:
+  ci_job:
+    name: CI Job
+    runs-on: ubuntu-latest
+    environment: hmg
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install Databricks CLI
+        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+ 
+      - name: Login Azure
+        run: |
+          az login --service-principal \
+            -u ${{ secrets.AZURE_CLIENT_ID }} \
+            --password ${{ secrets.AZURE_CLIENT_SECRET }} \
+            --tenant ${{ secrets.AZURE_TENANT_ID }} \
+            --allow-no-subscriptions
+      
+      - name: Get AAD token for Databricks
+        id: aad
+        run: |
+          TOKEN=$(az account get-access-token \
+            --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
+            --query accessToken -o tsv)
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+
+      - name: HMG Bundle Validation
+        env: 
+          
+          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+        run: |
+          databricks bundle validate \
+            -t hmg
+
+
+            

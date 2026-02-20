@@ -1,0 +1,1 @@
+A pasta pipelines/ armazenará os arquivos YAML das Pipelines (como Spark Declarative Pipelines).
