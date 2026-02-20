@@ -2,16 +2,13 @@ bundle:
   name: dab_project
 
 include:
-  - resources/*.yml
-  - resources/*/*.yml
+  - resources/jobs/*.yml
+  - resources/pipelines/*.yml
 
 variables:
   data_team:
     default: TIME
-  catalog:
-    description: "teste_c"
-  schema:
-    description: "teste_s"
+  
 
 workspace:
   root_path: /Workspace/_DABs/${var.data_team}/.bundle
@@ -28,27 +25,15 @@ targets:
     mode: production
     variables:
       catalog: "dbw_hmg_931595883494472"
-      schema: ${workspace.current_user.short_name} 
     workspace:
       host: https://adb-931595883494472.12.azuredatabricks.net 
-      
-
-    permissions:
-      - service_principal_name: 1b165a5e-1100-423e-b418-8ef95a78bc8a
-        level: CAN_MANAGE
-    run_as:
-      service_principal_name: 1b165a5e-1100-423e-b418-8ef95a78bc8a
 
   prd:
     mode: production
     variables:
       catalog: dbw_prd_3057642023030474
-      schema: ${workspace.current_user.short_name}
+
     workspace:
       host: https://adb-3057642023030474.14.azuredatabricks.net 
       
-    permissions:
-      - service_principal_name: 6d29feaf-c50a-479b-bcef-75c32490a0e3
-        level: CAN_MANAGE
-    run_as:
-      service_principal_name: 6d29feaf-c50a-479b-bcef-75c32490a0e3
+
