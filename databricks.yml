@@ -21,15 +21,12 @@ targets:
 
   hmg:
     mode: production
-    variables:
-      catalog: "dbw_hmg_931595883494472"
+    
     workspace:
       host: https://adb-931595883494472.12.azuredatabricks.net 
 
   prd:
     mode: production
-    variables:
-      catalog: dbw_prd_3057642023030474
 
     workspace:
       host: https://adb-3057642023030474.14.azuredatabricks.net 
