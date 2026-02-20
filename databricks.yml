@@ -15,7 +15,6 @@ workspace:
 
 targets:
   dev:
-
     mode: development
     default: true
     workspace:
