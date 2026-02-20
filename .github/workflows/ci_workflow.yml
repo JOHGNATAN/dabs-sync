@@ -37,7 +37,7 @@ jobs:
             --query accessToken -o tsv)
           echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
-      - name: HMG Bundle Validation
+      - name: DEV Bundle Validation
         env: 
           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
 
