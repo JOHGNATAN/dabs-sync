@@ -9,8 +9,53 @@ on:
 
 jobs:
 
+  cd-deploy-dev:
+    name: Deploy to DEV
+    runs-on: ubuntu-latest
+    environment: dev
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
+      - name: Install Databricks CLI
+        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+ 
+      - name: Login Azure
+        run: |
+          az login --service-principal \
+            -u ${{ secrets.AZURE_CLIENT_ID }} \
+            --password ${{ secrets.AZURE_CLIENT_SECRET }} \
+            --tenant ${{ secrets.AZURE_TENANT_ID }} \
+            --allow-no-subscriptions
+      
+      - name: Get AAD token for Databricks
+        id: aad
+        run: |
+          TOKEN=$(az account get-access-token \
+            --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
+            --query accessToken -o tsv)
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+
+      - name: DEV Bundle Validation
+        env: 
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+        run: |
+          databricks bundle validate \
+            -t dev
+
+      - name: DEV Bundle Deploy
+        env: 
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+        run: |
+          databricks bundle deploy \
+            -t dev
+
   cd-deploy-hmg:
     name: Deploy to HMG
+    needs: cd-deploy-dev
     runs-on: ubuntu-latest
     environment: hmg
     
@@ -53,26 +98,52 @@ jobs:
           databricks bundle deploy \
             -t hmg
 
-  # cd-deploy-hmg:
-  #   name: Deploy to HMG
-  #   runs-on: ubuntu-latest
-  #   environment: hmg
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
 
-  #     - name: Setup Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: '3.11'
+  cd-deploy-prd:
+    name: Deploy to PRD
+    needs: cd-deploy-hmg
+    runs-on: ubuntu-latest
+    environment: prd
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
+      - name: Install Databricks CLI
+        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+ 
+      - name: Login Azure
+        run: |
+          az login --service-principal \
+            -u ${{ secrets.AZURE_CLIENT_ID }} \
+            --password ${{ secrets.AZURE_CLIENT_SECRET }} \
+            --tenant ${{ secrets.AZURE_TENANT_ID }} \
+            --allow-no-subscriptions
+      
+      - name: Get AAD token for Databricks
+        id: aad
+        run: |
+          TOKEN=$(az account get-access-token \
+            --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
+            --query accessToken -o tsv)
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
-  #     - name: Install Databricks CLI
-  #       run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+      - name: PRD Bundle Validation
+        env: 
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+        run: |
+          databricks bundle validate \
+            -t prd
 
-  #     - name: Install Dependencies
-  #       run: |
-  #         pip install --upgrade pip
-  #         pip install setuptools wheel
+      - name: PRD Bundle Deploy
+        env: 
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+        run: |
+          databricks bundle deploy \
+            -t prd
+
 
   #     - name: Configure Databricks
   #       run: |
@@ -90,42 +161,3 @@ jobs:
   #         databricks bundle deploy \
   #           -t hmg \
   #           -p HMG
-
-  # cd-deploy-prod:
-  #   name: Deploy to PRD
-  #   needs: cd-deploy-hmg
-  #   runs-on: ubuntu-latest
-  #   environment: prd
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-
-  #     - name: Setup Python
-  #       uses: actions/setup-python@v5
-  #       with:
-  #         python-version: '3.11'
-
-  #     - name: Install Databricks CLI
-  #       run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-
-  #     - name: Install Dependencies
-  #       run: |
-  #         pip install --upgrade pip
-  #         pip install setuptools wheel
-
-  #     - name: Configure Databricks
-  #       run: |
-  #         # write out the profile (here called "PRD")
-  #         cat <<EOF > ~/.databrickscfg
-  #         [PRD]
-  #         host = https://adb-3057642023030474.14.azuredatabricks.net
-  #         azure_tenant_id = ${{ secrets.AZURE_TENANT_ID }}
-  #         azure_client_id = ${{ secrets.AZURE_CLIENT_ID }}
-  #         azure_client_secret = ${{ secrets.AZURE_CLIENT_SECRET }}
-  #         EOF
-
-  #     - name: Deploy to PRD
-  #       run: |
-  #         databricks bundle deploy \
-  #           -t prd \
-  #           -p PRD

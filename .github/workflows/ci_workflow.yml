@@ -11,7 +11,7 @@ jobs:
   ci_job:
     name: CI Job
     runs-on: ubuntu-latest
-    environment: hmg
+    environment: dev
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
