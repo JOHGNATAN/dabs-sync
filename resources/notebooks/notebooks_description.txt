@@ -1,1 +1,1 @@
-A pasta notebooks/ conterá apenas os notebooks de desenvolvimento, isto é, o código em si (Python, SQL, Scala, etc.).
+A pasta "notebooks/" terá apenas os notebooks de desenvolvimento, isto é, o código em si (Python, SQL, Scala, etc.).
