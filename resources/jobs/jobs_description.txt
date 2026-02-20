@@ -1,1 +1,1 @@
-A pasta jobs/ será usada para armazenar arquivos YAML que descrevem os Jobs do Databricks.
+A pasta "jobs/" será usada para armazenar arquivos YAML que descrevem os Jobs do Databricks.
