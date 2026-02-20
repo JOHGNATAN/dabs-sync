@@ -1,163 +1,163 @@
-name: CD Workflow
+# name: CD Workflow
 
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '.github/workflows/**'
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths-ignore:
+#       - '.github/workflows/**'
 
-jobs:
+# jobs:
 
-  cd-deploy-dev:
-    name: Deploy to DEV
-    runs-on: ubuntu-latest
-    environment: dev
+#   cd-deploy-dev:
+#     name: Deploy to DEV
+#     runs-on: ubuntu-latest
+#     environment: dev
     
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
  
-      - name: Install Databricks CLI
-        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+#       - name: Install Databricks CLI
+#         run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
  
-      - name: Login Azure
-        run: |
-          az login --service-principal \
-            -u ${{ secrets.AZURE_CLIENT_ID }} \
-            --password ${{ secrets.AZURE_CLIENT_SECRET }} \
-            --tenant ${{ secrets.AZURE_TENANT_ID }} \
-            --allow-no-subscriptions
+#       - name: Login Azure
+#         run: |
+#           az login --service-principal \
+#             -u ${{ secrets.AZURE_CLIENT_ID }} \
+#             --password ${{ secrets.AZURE_CLIENT_SECRET }} \
+#             --tenant ${{ secrets.AZURE_TENANT_ID }} \
+#             --allow-no-subscriptions
       
-      - name: Get AAD token for Databricks
-        id: aad
-        run: |
-          TOKEN=$(az account get-access-token \
-            --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
-            --query accessToken -o tsv)
-          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+#       - name: Get AAD token for Databricks
+#         id: aad
+#         run: |
+#           TOKEN=$(az account get-access-token \
+#             --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
+#             --query accessToken -o tsv)
+#           echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
-      - name: DEV Bundle Validation
-        env: 
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
-        run: |
-          databricks bundle validate \
-            -t dev
+#       - name: DEV Bundle Validation
+#         env: 
+#           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+#           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+#         run: |
+#           databricks bundle validate \
+#             -t dev
 
-      - name: DEV Bundle Deploy
-        env: 
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
-        run: |
-          databricks bundle deploy \
-            -t dev
+#       - name: DEV Bundle Deploy
+#         env: 
+#           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+#           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+#         run: |
+#           databricks bundle deploy \
+#             -t dev
 
-  cd-deploy-hmg:
-    name: Deploy to HMG
-    needs: cd-deploy-dev
-    runs-on: ubuntu-latest
-    environment: hmg
+#   cd-deploy-hmg:
+#     name: Deploy to HMG
+#     needs: cd-deploy-dev
+#     runs-on: ubuntu-latest
+#     environment: hmg
     
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
  
-      - name: Install Databricks CLI
-        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+#       - name: Install Databricks CLI
+#         run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
  
-      - name: Login Azure
-        run: |
-          az login --service-principal \
-            -u ${{ secrets.AZURE_CLIENT_ID }} \
-            --password ${{ secrets.AZURE_CLIENT_SECRET }} \
-            --tenant ${{ secrets.AZURE_TENANT_ID }} \
-            --allow-no-subscriptions
+#       - name: Login Azure
+#         run: |
+#           az login --service-principal \
+#             -u ${{ secrets.AZURE_CLIENT_ID }} \
+#             --password ${{ secrets.AZURE_CLIENT_SECRET }} \
+#             --tenant ${{ secrets.AZURE_TENANT_ID }} \
+#             --allow-no-subscriptions
       
-      - name: Get AAD token for Databricks
-        id: aad
-        run: |
-          TOKEN=$(az account get-access-token \
-            --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
-            --query accessToken -o tsv)
-          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+#       - name: Get AAD token for Databricks
+#         id: aad
+#         run: |
+#           TOKEN=$(az account get-access-token \
+#             --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
+#             --query accessToken -o tsv)
+#           echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
-      - name: HMG Bundle Validation
-        env: 
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
-        run: |
-          databricks bundle validate \
-            -t hmg
+#       - name: HMG Bundle Validation
+#         env: 
+#           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+#           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+#         run: |
+#           databricks bundle validate \
+#             -t hmg
 
-      - name: HMG Bundle Deploy
-        env: 
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
-        run: |
-          databricks bundle deploy \
-            -t hmg
+#       - name: HMG Bundle Deploy
+#         env: 
+#           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+#           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+#         run: |
+#           databricks bundle deploy \
+#             -t hmg
 
 
-  cd-deploy-prd:
-    name: Deploy to PRD
-    needs: cd-deploy-hmg
-    runs-on: ubuntu-latest
-    environment: prd
+#   cd-deploy-prd:
+#     name: Deploy to PRD
+#     needs: cd-deploy-hmg
+#     runs-on: ubuntu-latest
+#     environment: prd
     
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
  
-      - name: Install Databricks CLI
-        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+#       - name: Install Databricks CLI
+#         run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
  
-      - name: Login Azure
-        run: |
-          az login --service-principal \
-            -u ${{ secrets.AZURE_CLIENT_ID }} \
-            --password ${{ secrets.AZURE_CLIENT_SECRET }} \
-            --tenant ${{ secrets.AZURE_TENANT_ID }} \
-            --allow-no-subscriptions
+#       - name: Login Azure
+#         run: |
+#           az login --service-principal \
+#             -u ${{ secrets.AZURE_CLIENT_ID }} \
+#             --password ${{ secrets.AZURE_CLIENT_SECRET }} \
+#             --tenant ${{ secrets.AZURE_TENANT_ID }} \
+#             --allow-no-subscriptions
       
-      - name: Get AAD token for Databricks
-        id: aad
-        run: |
-          TOKEN=$(az account get-access-token \
-            --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
-            --query accessToken -o tsv)
-          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+#       - name: Get AAD token for Databricks
+#         id: aad
+#         run: |
+#           TOKEN=$(az account get-access-token \
+#             --resource 2ff814a6-3304-4ab8-85cb-cd0e6f879c1d \
+#             --query accessToken -o tsv)
+#           echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
-      - name: PRD Bundle Validation
-        env: 
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
-        run: |
-          databricks bundle validate \
-            -t prd
+#       - name: PRD Bundle Validation
+#         env: 
+#           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+#           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+#         run: |
+#           databricks bundle validate \
+#             -t prd
 
-      - name: PRD Bundle Deploy
-        env: 
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
-        run: |
-          databricks bundle deploy \
-            -t prd
+#       - name: PRD Bundle Deploy
+#         env: 
+#           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+#           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+#         run: |
+#           databricks bundle deploy \
+#             -t prd
 
 
-  #     - name: Configure Databricks
-  #       run: |
-  #         # write out the profile (here called "HMG")
-  #         cat <<EOF > ~/.databrickscfg
-  #         [HMG]
-  #         host = https://adb-931595883494472.12.azuredatabricks.net
-  #         azure_tenant_id = ${{ secrets.AZURE_TENANT_ID }}
-  #         azure_client_id = ${{ secrets.AZURE_CLIENT_ID }}
-  #         azure_client_secret = ${{ secrets.AZURE_CLIENT_SECRET }}
-  #         EOF
+#   #     - name: Configure Databricks
+#   #       run: |
+#   #         # write out the profile (here called "HMG")
+#   #         cat <<EOF > ~/.databrickscfg
+#   #         [HMG]
+#   #         host = https://adb-931595883494472.12.azuredatabricks.net
+#   #         azure_tenant_id = ${{ secrets.AZURE_TENANT_ID }}
+#   #         azure_client_id = ${{ secrets.AZURE_CLIENT_ID }}
+#   #         azure_client_secret = ${{ secrets.AZURE_CLIENT_SECRET }}
+#   #         EOF
 
-  #     - name: Deploy to HMG
-  #       run: |
-  #         databricks bundle deploy \
-  #           -t hmg \
-  #           -p HMG
+#   #     - name: Deploy to HMG
+#   #       run: |
+#   #         databricks bundle deploy \
+#   #           -t hmg \
+#   #           -p HMG
