@@ -6,6 +6,9 @@ include:
   - resources/pipelines/*.yml
 
 variables:
+  catalog:
+    description: "Catálogo do Unity Catalog usado pelos recursos (jobs/pipelines)."
+
   data_team:
     default: TIME
   
