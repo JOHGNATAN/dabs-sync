@@ -11,7 +11,7 @@ variables:
   
 
 workspace:
-  root_path: /Workspace/_DABs/${var.data_team}/.bundle
+  root_path: /Workspace/${var.data_team}
 
 targets:
   dev:
