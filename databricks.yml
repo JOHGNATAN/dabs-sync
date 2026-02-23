@@ -10,11 +10,10 @@ variables:
     description: "Catálogo do Unity Catalog usado pelos recursos (jobs/pipelines)."
 
   data_team:
-    default: DTCORE
+    default: dtcore
   
-
 workspace:
-  root_path: /Workspace/${var.data_team.lower}
+  root_path: /Workspace/data_teams_bundles/${var.data_team}
 
 targets:
   dev:
@@ -27,7 +26,6 @@ targets:
 
 
   hmg:
-    mode: production
 
     workspace:
       host: https://adb-931595883494472.12.azuredatabricks.net 
