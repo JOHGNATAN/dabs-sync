@@ -8,7 +8,6 @@ include:
 variables:
   catalog:
     description: "Catálogo do Unity Catalog usado pelos recursos (jobs/pipelines)."
-
   data_team:
     description: "Data Team"
     default: dtcore
@@ -26,7 +25,6 @@ targets:
         default: ${var.data_team}_${bundle.target}
 
   hmg:
-
     workspace:
       host: https://adb-931595883494472.12.azuredatabricks.net  
     variables:
