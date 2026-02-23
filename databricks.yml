@@ -23,7 +23,7 @@ targets:
       host: https://adb-3708298834757333.13.azuredatabricks.net 
     variables:
       catalog:
-        default: ${bundle.target}_${var.data_team}
+        default: ${var.data_team}_${bundle.target}
 
   hmg:
 
@@ -31,7 +31,7 @@ targets:
       host: https://adb-931595883494472.12.azuredatabricks.net  
     variables:
       catalog:
-        default: ${bundle.target}_${var.data_team}
+        default: ${var.data_team}_${bundle.target}
 
   prd:
     mode: production
@@ -39,6 +39,6 @@ targets:
       host: https://adb-3057642023030474.14.azuredatabricks.net 
     variables:
       catalog:
-        default: ${bundle.target}_${var.data_team}
+        default: ${var.data_team}_${bundle.target}
       
 
