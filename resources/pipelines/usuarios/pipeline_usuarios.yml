@@ -4,14 +4,14 @@ resources:
       name: usuarios
       libraries:
         - glob:
-            include: ../notebooks/usuarios/transformations/sample_users_feb_24_1026.py
+            include: ../resources/resources/notebooks/usuarios/transformations/sample_users_feb_24_1026.py
         - glob:
-            include: ../notebooks/usuarios/transformations/sample_aggregation_feb_24_1026.py
+            include: ../resources/notebooks/usuarios/transformations/sample_aggregation_feb_24_1026.py
         - glob:
-            include: ../notebooks/usuarios/utilities/utils.py
+            include: ../resources/notebooks/usuarios/utilities/utils.py
       schema: default
       photon: true
       catalog: ${var.catalog}
       serverless: true
-      root_path: ../notebooks/usuarios
+      root_path: ../resources/notebooks/usuarios
 

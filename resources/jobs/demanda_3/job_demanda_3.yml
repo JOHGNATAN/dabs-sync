@@ -5,7 +5,7 @@ resources:
       tasks:
         - task_key: demanda_3
           notebook_task:
-            notebook_path: ../notebooks/demanda_3/demanda_3.ipynb
+            notebook_path: ../resources/notebooks/demanda_3/demanda_3.ipynb
             source: WORKSPACE
       queue:
         enabled: true
