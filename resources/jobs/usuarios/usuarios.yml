@@ -6,7 +6,13 @@ resources:
         - task_key: usuarios
           pipeline_task:
             pipeline_id: ${resources.pipelines.pipeline_usuarios.id}
+            full_refresh: false
       queue:
         enabled: true
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: schema
+          default: default
       performance_target: PERFORMANCE_OPTIMIZED
 
