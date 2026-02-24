@@ -8,7 +8,7 @@ resources:
         - glob:
             include: ../notebooks/usuarios/transformations/sample_aggregation_feb_24_1026.py
         - glob:
-            include: ../notebooks/usuarios/utilities/utils
+            include: ../notebooks/usuarios/utilities/utils.py
       schema: default
       photon: true
       catalog: ${var.catalog}

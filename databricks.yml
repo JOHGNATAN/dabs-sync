@@ -20,6 +20,8 @@ workspace:
 permissions:
   - group_name: "CLOUD_${var.data_team_upper}"
     level: CAN_MANAGE
+  - user_name: "johg.estudos@gmail.com"
+    level: CAN_MANAGE
     
 targets:
   dev:
