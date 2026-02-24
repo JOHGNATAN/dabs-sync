@@ -2,19 +2,10 @@ from pyspark import pipelines as dp
 from pyspark.sql.functions import col, count, count_if
 from utilities import utils
 
-# Configura widgets de entrada
-dbutils.widgets.text("catalog", "")
-dbutils.widgets.text("schema", "")
-
-catalog = dbutils.widgets.get("catalog")
-schema = dbutils.widgets.get("schema")
-
-@dp.table(
-    name= f"{catalog}.{schema}.sample_aggregation_feb_24_1026"
-)
+@dp.table()
 def sample_aggregation_feb_24_1026():
     return (
-        spark.read.table(f"{catalog}.{schema}.sample_users_feb_24_1026")
+        spark.read.table(f"sample_users_feb_24_1026")
         .withColumn("valid_email", utils.is_valid_email(col("email")))
         .groupBy(col("user_type"))
         .agg(

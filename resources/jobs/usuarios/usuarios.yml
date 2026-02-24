@@ -9,10 +9,5 @@ resources:
             full_refresh: false
       queue:
         enabled: true
-      parameters:
-        - name: catalog
-          default: ${var.catalog}
-        - name: schema
-          default: default
       performance_target: PERFORMANCE_OPTIMIZED
 
