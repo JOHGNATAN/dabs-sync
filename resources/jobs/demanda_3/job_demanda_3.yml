@@ -1,0 +1,12 @@
+resources:
+  jobs:
+    job_demanda_3:
+      name: job_demanda_3
+      tasks:
+        - task_key: demanda_3
+          notebook_task:
+            notebook_path: ../notebooks/demanda_3/demanda_3.ipynb
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
