@@ -1,0 +1,11 @@
+resources:
+  jobs:
+    DTCORE_usuarios:
+      name: "[DTCORE] usuarios"
+      tasks:
+        - task_key: usuarios
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.pipeline_usuarios.id}
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED

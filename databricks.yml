@@ -11,10 +11,16 @@ variables:
   data_team:
     description: "Data Team"
     default: dtcore
+  data_team_upper:
+    default: DTCORE
   
 workspace:
   root_path: /Workspace/data_teams_bundles/${var.data_team}
 
+permissions:
+  - group_name: "CLOUD_${var.data_team_upper}"
+    level: CAN_MANAGE
+    
 targets:
   dev:
     default: true
