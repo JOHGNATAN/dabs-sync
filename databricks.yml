@@ -17,11 +17,7 @@ variables:
 workspace:
   root_path: /Workspace/data_teams_bundles/${var.data_team}
 
-permissions:
-  - group_name: "CLOUD_${var.data_team_upper}"
-    level: CAN_MANAGE
-  - user_name: "johg.estudos@gmail.com"
-    level: CAN_MANAGE
+
     
 targets:
   dev:
@@ -31,6 +27,12 @@ targets:
     variables:
       catalog:
         default: ${var.data_team}_${bundle.target}
+    permissions:
+    - group_name: "CLOUD_${var.data_team_upper}"
+      level: CAN_MANAGE
+    - user_name: "johg.estudos@gmail.com"
+      level: CAN_MANAGE
+
 
   hmg:
     workspace:
@@ -38,6 +40,12 @@ targets:
     variables:
       catalog:
         default: ${var.data_team}_${bundle.target}
+    permissions:
+    - group_name: "CLOUD_${var.data_team_upper}"
+      level: CAN_MANAGE
+    - user_name: "johg.estudos@gmail.com"
+      level: CAN_MANAGE
+
 
   prd:
     mode: production
@@ -46,5 +54,8 @@ targets:
     variables:
       catalog:
         default: ${var.data_team}_${bundle.target}
-      
-
+    permissions:
+    - group_name: "CLOUD_${var.data_team_upper}"
+      level: CAN_MANAGE
+    - user_name: "johg.estudos@gmail.com"
+      level: CAN_MANAGE
