@@ -2,8 +2,12 @@ from pyspark import pipelines as dp
 from pyspark.sql.functions import col, count, count_if
 from utilities import utils
 
-catalog = spark.conf.get("catalog")
-schema = spark.conf.get("schema")
+# Configura widgets de entrada
+dbutils.widgets.text("catalog", "")
+dbutils.widgets.text("schema", "")
+
+catalog = dbutils.widgets.get("catalog")
+schema = dbutils.widgets.get("schema")
 
 @dp.table(
     name= f"{catalog}.{schema}.sample_aggregation_feb_24_1026"
