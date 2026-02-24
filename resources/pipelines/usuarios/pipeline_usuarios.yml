@@ -1,0 +1,19 @@
+resources:
+  pipelines:
+    pipeline_usuarios:
+      name: Usuarios
+      configuration:
+        catalog: ${var.catalog}
+        schema: default
+      libraries:
+        - glob:
+            include: ../notebooks/usuarios/transformations/sample_aggregation_feb_24_1026.py
+        - glob:
+            include: ../notebooks/usuarios/utilities/utils.py
+        - glob:
+            include: ../notebooks/usuarios/transformations/sample_users_feb_24_1026.py
+      schema: default
+      photon: true
+      catalog: ${var.catalog}
+      serverless: true
+      root_path: ../notebooks/usuarios
