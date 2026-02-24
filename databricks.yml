@@ -23,7 +23,8 @@ targets:
     workspace:
       host: https://adb-3708298834757333.13.azuredatabricks.net 
     variables:
-      catalog: ${var.data_team}_${bundle.target}
+      catalog: 
+        default: ${var.data_team}_${bundle.target}
     permissions:
     - group_name: "CLOUD_${var.data_team_upper}"
       level: CAN_MANAGE
@@ -35,7 +36,8 @@ targets:
     workspace:
       host: https://adb-931595883494472.12.azuredatabricks.net  
     variables:
-      catalog: ${var.data_team}_${bundle.target}
+      catalog:
+        default: ${var.data_team}_${bundle.target}
     permissions:
     - group_name: "CLOUD_${var.data_team_upper}"
       level: CAN_MANAGE
@@ -48,7 +50,8 @@ targets:
     workspace:
       host: https://adb-3057642023030474.14.azuredatabricks.net 
     variables:
-      catalog: ${var.data_team}_${bundle.target}
+      catalog: 
+        default: ${var.data_team}_${bundle.target}
     permissions:
     - group_name: "CLOUD_${var.data_team_upper}"
       level: CAN_MANAGE
