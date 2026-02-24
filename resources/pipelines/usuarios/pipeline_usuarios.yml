@@ -13,5 +13,5 @@ resources:
       photon: true
       catalog: ${var.catalog}
       serverless: true
-      root_path: ../notebooks/usuarios
+      root_path: ../../notebooks/usuarios/
 
