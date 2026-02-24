@@ -2,6 +2,9 @@ resources:
   pipelines:
     pipeline_usuarios:
       name: usuarios
+      configuration:
+        catalog: ${var.catalog}
+        schema: default
       libraries:
         - glob:
             include: ../../notebooks/usuarios/transformations/sample_users_feb_24_1026.py
