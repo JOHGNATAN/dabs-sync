@@ -7,7 +7,6 @@ on:
     paths-ignore:
       - '.github/workflows/**'
 
-
 jobs:
   ci_job:
     name: CI Job
@@ -39,7 +38,6 @@ jobs:
       - name: Bundle Validation
         env: 
           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
-
         run: |
           databricks bundle validate \
             -t dev
