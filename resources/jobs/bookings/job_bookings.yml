@@ -1,0 +1,16 @@
+resources:
+  jobs:
+    bookings:
+      name: bookings
+      tasks:
+        - task_key: bookings_table
+          notebook_task:
+            notebook_path: ../../notebooks/bookings/bookings
+            source: WORKSPACE
+          disable_auto_optimization: true
+      queue:
+        enabled: true
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+      performance_target: PERFORMANCE_OPTIMIZED
