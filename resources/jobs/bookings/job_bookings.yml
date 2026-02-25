@@ -1,7 +1,7 @@
 resources:
   jobs:
-    bookings:
-      name: bookings
+    DTCORE_bookings:
+      name: "[DTCORE] bookings"
       tasks:
         - task_key: bookings_table
           notebook_task:
@@ -14,3 +14,5 @@ resources:
         - name: catalog
           default: ${var.catalog}
       performance_target: PERFORMANCE_OPTIMIZED
+
+
