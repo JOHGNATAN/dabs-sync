@@ -6,13 +6,11 @@ resources:
         - task_key: bookings_table
           notebook_task:
             notebook_path: ../../notebooks/bookings/bookings.ipynb
+            base_parameters:
+              catalog: ${var.catalog}
             source: WORKSPACE
+          min_retry_interval_millis: 900000
           disable_auto_optimization: true
       queue:
         enabled: true
-      parameters:
-        - name: catalog
-          default: ${var.catalog}
       performance_target: PERFORMANCE_OPTIMIZED
-
-
