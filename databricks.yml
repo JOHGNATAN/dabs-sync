@@ -28,9 +28,6 @@ targets:
     permissions:
     - group_name: "CLOUD_${var.data_team_upper}"
       level: CAN_MANAGE
-    - user_name: "johg.estudos@gmail.com"
-      level: CAN_MANAGE
-
 
   hmg:
     workspace:
@@ -41,9 +38,6 @@ targets:
     permissions:
     - group_name: "CLOUD_${var.data_team_upper}"
       level: CAN_MANAGE
-    - user_name: "johg.estudos@gmail.com"
-      level: CAN_MANAGE
-
 
   prd:
     mode: production
@@ -54,6 +48,4 @@ targets:
         default: ${var.data_team}_${bundle.target}
     permissions:
     - group_name: "CLOUD_${var.data_team_upper}"
-      level: CAN_MANAGE
-    - user_name: "johg.estudos@gmail.com"
       level: CAN_MANAGE
