@@ -5,7 +5,7 @@ resources:
       tasks:
         - task_key: bookings_table
           notebook_task:
-            notebook_path: ../../notebooks/bookings/bookings
+            notebook_path: ../../notebooks/bookings/bookings.ipynb
             source: WORKSPACE
           disable_auto_optimization: true
       queue:
