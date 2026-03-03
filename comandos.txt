@@ -32,4 +32,3 @@ foreach ($job in $filtered) {
 
     Write-Host "OK  -> $job_id | $job_name"
 }
-
