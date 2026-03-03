@@ -37,12 +37,14 @@ jobs:
           echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
       - name: Migration
+        shell: pwsh
         env: 
           DATABRICKS_TOKEN: ${{ steps.aad.outputs.token }}
+          DATABRICKS_HOST: https://adb-3708298834757333.13.azuredatabricks.net
         run: |
           $jobs = databricks jobs list --output json | ConvertFrom-Json \
-
-          $filtered = $jobs | Where-Object { $_.settings.name -match '(?i)\[${{ secrets.DATA_TEAM }}\]' }\
+          $team = "${{ secrets.DATA_TEAM }}"
+          $filtered = $jobs | Where-Object { $_.settings.name -match '(?i)\[$team\]' }\
 
           foreach ($job in $filtered) { 
               $job_id   = $job.job_id 
