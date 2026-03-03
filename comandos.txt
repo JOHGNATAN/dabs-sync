@@ -1,0 +1,34 @@
+#### Comando usados na tentativa de migração de jobs existentes...
+
+#### O comando usado abaixo tem como objetivo automatizar o YML de um job existente no workspace
+
+
+$jobs = databricks jobs list --output json | ConvertFrom-Json
+
+foreach ($job in $jobs) {
+    $job_id   = $job.job_id
+    $job_name = $job.settings.name
+
+    if ($job_name -match '(?i)\[DTCORE\]') {
+        databricks bundle generate job --existing-job-id $job_id --bind  --config-dir "resources/jobs" --force
+
+        Write-Host "OK  -> $job_id | $job_name"
+    } else {
+        Write-Host "SKIP -> $job_id | $job_name" -ForegroundColor DarkGray
+    }
+}
+
+#######################################################################
+
+$jobs = databricks jobs list --output json | ConvertFrom-Json 
+
+$filtered = $jobs | Where-Object { $_.settings.name -match '(?i)\[DTCORE\]' }
+
+foreach ($job in $filtered) {
+    $job_id   = $job.job_id
+    $job_name = $job.settings.name
+
+    databricks bundle generate job --existing-job-id $job_id --bind  --config-dir "resources/jobs" --force
+
+    Write-Host "OK  -> $job_id | $job_name"
+}
