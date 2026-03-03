@@ -9,8 +9,8 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  ci_job:
-    name: CI Job
+  migracao_job:
+    name: Migracao Job
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -44,12 +44,12 @@ jobs:
 
           $filtered = $jobs | Where-Object { $_.settings.name -match '(?i)\[${{ secrets.DATA_TEAM }}\]' }\
 
-          foreach ($job in $filtered) { \
-              $job_id   = $job.job_id \
-              $job_name = $job.settings.name \
+          foreach ($job in $filtered) { 
+              $job_id   = $job.job_id 
+              $job_name = $job.settings.name 
 
-              databricks bundle generate job --existing-job-id $job_id --bind  --config-dir "resources/jobs/migrados" --source-dir "resources/notebooks/migrados" --force \
+              databricks bundle generate job --existing-job-id $job_id --bind  --config-dir "resources/jobs/migrados" --source-dir "resources/notebooks/migrados" --force 
 
-              Write-Host "OK  -> $job_id | $job_name" \
+              Write-Host "OK  -> $job_id | $job_name" 
           }
 
