@@ -9,7 +9,7 @@ resources:
             include: ../../notebooks/usuarios/transformations/sample_aggregation_feb_24_1026.py
         - glob:
             include: ../../notebooks/usuarios/utilities/utils.py
-      schema: default
+      schema: teste_deploy
       photon: true
       catalog: ${var.catalog}
       serverless: true

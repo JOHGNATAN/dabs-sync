@@ -18,6 +18,9 @@ variables:
 workspace:
   root_path: /Workspace/data_teams_bundles/${var.data_team}
 
+run_as:
+  user_name: johgnatanoperacional@gmail.com
+
 targets:
   dev:
     default: true
